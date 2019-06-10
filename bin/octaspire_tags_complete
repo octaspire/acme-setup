@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+############################################################################
+# Octaspire Acme Setup - Scripts to be used with the Acme editor
+# Copyright 2019 www.octaspire.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+############################################################################
+"""
+Create and report completion suggestions for the given name by
+searching fuzzily matching names from a TAGS file.
+"""
+
+# Installation of required package(s):
+# pip install --user fuzzywuzzy[speedup]
+
+# Usage, when this file is in PATH:
+# 1. Highlight a name in the Acme editor using mouse button 1.
+# 2. Execute text "> octaspire_tags_complete" in the tag of the window.
+
+import os
+import sys
+from fuzzywuzzy import process
+
+NAME = sys.stdin.read()
+
+if not NAME:
+    print("octaspire_tags_complete: ERROR, a name expected from stdin.")
+    sys.exit(1)
+else:
+    print(f"\n\nCompleting '{NAME}'")
+
+if os.system('octaspire_tags_up'):
+    print("octaspire_tags_complete: ERROR, cannot run 'octaspire_tags_up'")
+    sys.exit(1)
+
+ROOTPATH = os.environ['OCTASPIRE_PROJECT_ROOT']
+TAGSPATH = os.path.join(ROOTPATH, 'TAGS')
+
+def completetag(name):
+    """Find and report completion alternatives for the given name."""
+    names = []
+
+    for line in open(TAGSPATH):
+        if not line.startswith('!_TAG'):
+            fields = line.split('\t')
+            names.append(fields[0])
+
+    ratios = process.extract(name, names)
+
+    for i in range(min(len(ratios), 10)):
+        if ratios[i][1] > 0:
+            print(f'  {ratios[i][0]} {ratios[i][1]}%')
+
+    print("\n")
+
+completetag(NAME)

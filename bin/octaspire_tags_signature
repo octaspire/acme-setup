@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+############################################################################
+# Octaspire Acme Setup - Scripts to be used with the Acme editor
+# Copyright 2019 www.octaspire.com
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+############################################################################
+"""
+Locate definition for a name from TAGS file and
+report its signature.
+"""
+
+# Usage, when this file is in PATH:
+# 1. Highlight a name in the Acme editor using mouse button 1.
+# 2. Execute text "> octaspire_tags_signature" in the tag of the window.
+
+import os
+import sys
+
+NAME = sys.stdin.read()
+
+if not NAME:
+    print("octaspire_tags_signature: ERROR, a name expected from stdin.")
+    sys.exit(1)
+else:
+    print(f"\n\nLooking for '{NAME}'")
+
+if os.system('octaspire_tags_up'):
+    print("octaspire_tags_signature: ERROR, cannot run 'octaspire_tags_up'")
+    sys.exit(1)
+
+ROOTPATH = os.environ['OCTASPIRE_PROJECT_ROOT']
+TAGSPATH = os.path.join(ROOTPATH, 'TAGS')
+
+def tagfind(name):
+    """Find and report signature for the requested name from TAGS file"""
+    numfound = 0
+
+    for line in open(TAGSPATH):
+        if not line.startswith('!_TAG'):
+            fields = line.split('\t')
+            if fields[0] == name and len(fields) >= 3:
+                sign = fields[3][10:-1] # Remove 'signature:' and '\n'
+                print(f"  {name}{sign}")
+                numfound += 1
+
+    if not numfound:
+        print("NOT found\n")
+    else:
+        print(f"found {numfound} signatures\n")
+
+tagfind(NAME)
