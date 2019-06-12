@@ -20,6 +20,7 @@ check: shellcheck pylint
 
 shellcheck:
 	@shellcheck bin/octaspire_acme
+	@shellcheck bin/octaspire_project_root
 
 pylint:
 	@pylint bin/octaspire_tags_up
@@ -30,17 +31,19 @@ pylint:
 install:
 	@mkdir -p ~/bin
 	@ln -s "$(PWD)/bin/octaspire_acme"           "$(HOME)/bin/octaspire_acme"
+	@ln -s "$(PWD)/bin/octaspire_project_root"   "$(HOME)/bin/octaspire_project_root"
 	@ln -s "$(PWD)/bin/octaspire_tags_up"        "$(HOME)/bin/octaspire_tags_up"
 	@ln -s "$(PWD)/bin/octaspire_tags_find"      "$(HOME)/bin/octaspire_tags_find"
 	@ln -s "$(PWD)/bin/octaspire_tags_complete"  "$(HOME)/bin/octaspire_tags_complete"
 	@ln -s "$(PWD)/bin/octaspire_tags_signature" "$(HOME)/bin/octaspire_tags_signature"
 
 uninstall:
-	@rm "$(HOME)/bin/octaspire_acme"
-	@rm "$(HOME)/bin/octaspire_tags_up"
-	@rm "$(HOME)/bin/octaspire_tags_find"
-	@rm "$(HOME)/bin/octaspire_tags_complete"
-	@rm "$(HOME)/bin/octaspire_tags_signature"
+	@rm -f "$(HOME)/bin/octaspire_acme"
+	@rm -f "$(HOME)/bin/octaspire_project_root"
+	@rm -f "$(HOME)/bin/octaspire_tags_up"
+	@rm -f "$(HOME)/bin/octaspire_tags_find"
+	@rm -f "$(HOME)/bin/octaspire_tags_complete"
+	@rm -f "$(HOME)/bin/octaspire_tags_signature"
 
 proof:
 	@markdown_py -x fenced_code -o html5 README.md > README.tmp

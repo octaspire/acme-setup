@@ -10,6 +10,12 @@ Contains:
    if available (this restores the workspace and gives also functionality
    similar to 'Goto Last Change' in GNU/Emacs).
 
+* __octaspire_project_root__: Run command '. octaspire_project_root'
+   (please note the dot in the beginning) in the root directory of
+   the project you want to work with. This command can be used to
+   set or change environment variable OCTASPIRE_PROJECT_ROOT that
+   should point to the root directory of the project.
+
 * __octaspire_tags_up__: Takes care of creating and updating TAGS (universal-ctags) files
    so that the user never has to do it. Detects changes currently using modification
    time of files; more robust solution would be checksumming the files.
@@ -22,7 +28,7 @@ Contains:
   (partial) name. Matches are looked for and sorted fuzzily using Levenshtein
   distances. *Philosophical Note: I think that code completion might encourage
   use of overlong names and thus it might be something that should not be done;
-  instead the situation might be fixed by just using shorter names.* 
+  instead the situation might be fixed by just using shorter names.*
 
 * __octaspire_tags_signature__: Reports function signature for the C function,
   that has its name highlighted.
@@ -50,6 +56,16 @@ your path, you can copy files like this:
 
 ```sh
 make install
+```
+
+First of all, the environment variable `OCTASPIRE_PROJECT_ROOT` must
+point to the root directory of the project you want to work with. It
+can be exported like any other environment variable in `.profile` or
+some other file, but it can be also set and changed using command:
+
+```sh
+cd some/project/
+. octaspire_project_root
 ```
 
 Then Acme can be started using:

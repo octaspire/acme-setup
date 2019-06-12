@@ -28,7 +28,16 @@ does nothing.
 import os
 import sys
 
-ROOTPATH = os.environ['OCTASPIRE_PROJECT_ROOT']
+if "OCTASPIRE_PROJECT_ROOT" in os.environ:
+    ROOTPATH = os.environ['OCTASPIRE_PROJECT_ROOT']
+else:
+    print("Error: OCTASPIRE_PROJECT_ROOT environment variable is NOT set.\n"
+          "It must point to the root directory of the project you want\n"
+          "to work with. HINT: you can set it or change it by running\n"
+          "command '. octaspire_project_root' in the root directory of\n"
+          "the project (please not the dot in the beginning).")
+    sys.exit(1)
+
 TAGSPATH = os.path.join(ROOTPATH, 'TAGS')
 
 def gentags(path, cfiles, dfiles):

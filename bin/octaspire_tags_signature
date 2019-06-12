@@ -42,6 +42,8 @@ if os.system('octaspire_tags_up'):
 ROOTPATH = os.environ['OCTASPIRE_PROJECT_ROOT']
 TAGSPATH = os.path.join(ROOTPATH, 'TAGS')
 
+print(f"from project {ROOTPATH}")
+
 def tagfind(name):
     """Find and report signature for the requested name from TAGS file"""
     numfound = 0

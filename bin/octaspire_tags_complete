@@ -46,6 +46,8 @@ if os.system('octaspire_tags_up'):
 ROOTPATH = os.environ['OCTASPIRE_PROJECT_ROOT']
 TAGSPATH = os.path.join(ROOTPATH, 'TAGS')
 
+print(f"from project {ROOTPATH}")
+
 def completetag(name):
     """Find and report completion alternatives for the given name."""
     names = []
